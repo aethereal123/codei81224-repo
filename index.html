@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="la">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODEI81224 :: Finis Dierum</title> <!-- End of Days, thematic title -->
+  <link id="favicon" rel="icon" type="image/png" href="https://i.ibb.co/Mkkm0zhX/Codei-removebg-preview.png"> <!-- Corrected Favicon to direct logo URL -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- CSS RESET & GLOBAL DEFAULTS --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #000000; color: #8a8a8a; font-family: 'Cinzel', serif;
+      line-height: 1.7; font-size: 16px; overflow-x: hidden;
+      /* Thematic cursor kept from original */
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23500" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 12l10 10 10-10-10-10z"></path><line x1="2" y1="12" x2="22" y2="12"></line></svg>') 12 12, auto;
+      transition: background-color 0.7s ease-in-out; min-height: 100vh;
+    }
+    body.no-scroll, body.idiot-swarm-active { overflow: hidden !important; }
+    body.startup-phase { display: flex; justify-content: center; align-items: center; }
+    body.global-glitch-effect { animation: bodyMasterGlitchIntense 0.1s ease-in-out 4; }
+    body::before { /* Subtle demonic texture overlay */
+        content:"";position:fixed;top:0;left:0;width:100vw;height:100vh;
+        background-image:url('https://www.transparenttextures.com/patterns/skulls.png'); /* Existing skull texture */
+        opacity:0.03; /* Slightly increased visibility */
+        z-index:-1;pointer-events:none;
+        mix-blend-mode: overlay; /* Blend mode for thematic effect */
+    }
+
+    /* --- TEXT SELECTION & POINTER EVENTS --- */
+    .unselectable-text, .section-content p, .section-title, #ritual-instruction, .startup-text, footer p, body.idiot-swarm-active * {
+        user-select:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;
+    }
+    body.idiot-swarm-active *:not(#idiot-container):not(#idiot-container *) {
+        pointer-events: none !important;
+    }
+    .unselectable-text a, .section-content a, footer a {
+        user-select:auto;-webkit-user-select:auto;-moz-user-select:auto;-ms-user-select:auto;
+        pointer-events:auto;
+    }
+
+    /* --- KEYFRAMES: GLOBAL --- */
+    @keyframes bodyMasterGlitchIntense {
+      0%,100%{transform:skew(0);filter:none;background-color:#000;}
+      50%{transform:skew(5deg,-4deg) scale(1.02);filter:hue-rotate(120deg) brightness(0.6) invert(1) saturate(2);background-color:#400;} /* Slightly less saturated red for main glitch */
+    }
+    @keyframes textFlickerMoreSubtle{0%,100%{opacity:1;}50%{opacity:0.8;}}
+    @keyframes contentSectionQuickFade{from{opacity:0;transform:translateY(15px);}to{opacity:1;transform:translateY(0px);}} /* Slightly more pronounced entry */
+    @keyframes titleFlickerPulse{0%{opacity:0.7;transform:scale(0.98);}50%{opacity:0.95;transform:scale(1.02);}100%{opacity:0.7;transform:scale(0.98);}} /* More pulse */
+    @keyframes textVerySubtleCorrupt{0%{transform:translateX(0.3px) skewX(-0.1deg);opacity:0.97;}100%{transform:translateX(-0.3px) skewX(0.1deg);opacity:1;}} /* Enhanced subtle corruption */
+
+
+    /* --- STARTUP OVERLAY --- */
+    #startup-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background-color:#000;z-index:100000;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;transition:opacity 1.7s cubic-bezier(0.4,0,0.1,1),visibility 1.7s cubic-bezier(0.4,0,0.1,1);}
+    #startup-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+    #startup-logo{width:clamp(70px,18vw,110px);height:clamp(70px,18vw,110px);background-image:url('https://i.ibb.co/Mkkm0zhX/Codei-removebg-preview.png');background-size:contain;background-repeat:no-repeat;background-position:center;margin-bottom:clamp(20px,4.5vh,35px);filter:drop-shadow(0 0 10px rgba(200,0,0,0.5));animation:startupLogoHeavyBreath 3.5s infinite ease-in-out;} /* Stronger shadow, faster breath */
+    @keyframes startupLogoHeavyBreath{0%,100%{transform:scale(0.96) rotate(4deg);opacity:0.6;}50%{transform:scale(1.04) rotate(-4deg);opacity:0.95;}} /* More dynamic logo breath */
+    #play-button{
+      font-family:'UnifrakturMaguntia',cursive;font-size:clamp(3rem,7vw,4.2rem);color:#800000;
+      text-shadow:0 0 6px #ff0000,0 0 12px #ff0000, 0 0 2px #000;background:transparent;
+      border:2px solid #400000; padding:clamp(10px,2vw,18px) clamp(18px,3.5vw,32px);
+      cursor:pointer;transition:all 0.2s ease;border-radius:2px; /* Sharper edges */
+      box-shadow:0 0 7px #000 inset, 0 0 5px rgba(100,0,0,0.3); margin-bottom:12px;
+    }
+    #play-button:hover{transform:scale(1.03) translateY(-2px);box-shadow:0 0 20px #ff0000,0 0 10px #ff0000 inset;color:#ff1a1a;border-color:#700000;}
+    .startup-text{font-family:'Cinzel',serif;color:#3c3c3c;font-size:clamp(0.85rem,1.6vw,1.05rem);letter-spacing:0.3px;animation:textFlickerMoreSubtle 4.5s infinite alternate;} /* More contrast */
+    #majin-sound-player{display:none;}
+
+    /* --- NAVIGATION BAR --- */
+    .navbar-container{
+      width:100%;display:flex;justify-content:center;align-items:center; /* Align items center for vertical positioning */
+      position:sticky;top:0;z-index:2000;background:rgba(5,0,0,0.95); /* Darker, more opaque */
+      border-bottom:1.5px solid #300000; /* Thicker, darker border */
+      box-shadow:0 2px 12px rgba(150,0,0,0.55); /* Enhanced shadow */
+    }
+    .navbar{
+      width:100%; /* Full width to allow centering of its children */
+      max-width:1100px;display:flex;
+      justify-content: center; /* *** NAV ITEMS CENTERED AS REQUESTED *** */
+      align-items:center;
+      padding:8px clamp(10px,2vw,20px);
+      gap: clamp(15px, 3vw, 40px); /* Gap between logo and nav list */
+    }
+    .nav-logo{height:42px;width:42px;background-image:url('https://i.ibb.co/Mkkm0zhX/Codei-removebg-preview.png');background-size:contain;background-repeat:no-repeat;background-position:center;filter:drop-shadow(0 0 5px #b00000);transition:transform 0.25s ease,filter 0.25s ease;cursor:pointer;}
+    .nav-logo:hover{transform:scale(1.1) rotate(-6deg);filter:drop-shadow(0 0 8px #ff2222);}
+    .nav-logo.glitching{animation:navLogoIntenseGlitch 0.13s ease-in-out 3;}
+    @keyframes navLogoIntenseGlitch{0%,100%{transform:skew(0) scale(1);}50%{transform:skew(12deg,-10deg) scale(1.2) rotate(18deg);filter:hue-rotate(45deg) brightness(2) contrast(1.8);}} /* More intense glitch */
+    .navbar-list{list-style:none;display:flex;gap:clamp(10px,2vw,20px);}
+    .navbar-link{text-decoration:none;font-family:'UnifrakturMaguntia',cursive;font-size:clamp(1.2rem,2.2vw,1.5rem);color:#880000;padding:3px 6px;text-shadow:0.5px 0.5px 0.25px #000, 0 0 3px rgba(100,0,0,0.5);transition:color 0.18s,text-shadow 0.18s;position:relative;}
+    .navbar-link::after{
+      content:'';position:absolute;width:0;height:1.5px;bottom:-2px;left:50%;transform:translateX(-50%);
+      background-color:#bb0000; /* Brighter red */
+      box-shadow: 0 0 4px #dd0000; /* Added glow to underline */
+      transition:width 0.25s ease;
+    }
+    .navbar-link:hover, .navbar-link.active{color:#ee2222;text-shadow:0 0 7px #ff0000, 0 0 3px #000;}
+    .navbar-link:hover::after, .navbar-link.active::after{width:85%;}
+
+    /* --- CONTENT SECTIONS --- */
+    .content-section{
+      padding:clamp(30px,6vh,50px) clamp(16px,3.5vw,32px);min-height:calc(100vh - 130px); /* Adjusted padding */
+      display:none;animation:contentSectionQuickFade 0.7s ease-out forwards;position:relative;
+      border-top: 1px solid #1a0000; /* Subtle separator for satanic structure */
+      background: radial-gradient(ellipse at 50% 150%, rgba(30,0,0,0.15) 0%, rgba(0,0,0,0) 60%); /* Faint upward glow from bottom */
+    }
+    .content-section.active{display:block;}
+    .section-title{
+      font-family:'UnifrakturMaguntia',cursive;font-size:clamp(2.5rem,5.5vw,3.5rem);color:#700000;
+      text-align:center;margin-bottom:clamp(25px,4.5vh,40px);letter-spacing:1.5px;
+      text-shadow:0 0 8px rgba(200,0,0,0.6),0.5px 0.5px 0.5px #000, 0 0 15px rgba(50,0,0,0.3); /* More defined shadow */
+      animation:titleFlickerPulse 4s infinite alternate ease-in-out;
+    }
+    .section-content{max-width:700px;margin:0 auto;text-align:justify;font-size:1.03em;} /* Slightly wider content */
+    .section-content p{margin-bottom:1.4em;color:#555555;transition:color 0.2s ease, text-shadow 0.2s ease;} /* Darker base text */
+    .section-content p:hover{color:#888888; text-shadow: 0 0 1px rgba(136,136,136,0.3);}
+
+    /* --- HOME SECTION SPECIFIC --- */
+    .home-sigil-graphic{
+      width:clamp(130px,28vw,200px);height:clamp(130px,28vw,200px); /* Slightly larger */
+      margin:clamp(20px,4.5vh,42px) auto;display:flex;justify-content:center;align-items:center;
+      font-family:'UnifrakturMaguntia',cursive;font-size:clamp(3.8rem,12vw,6.5rem);color:#2a0000; /* Darker text in sigil */
+      text-shadow:0 0 10px #dd0000,0 0 15px #800000, 0 0 3px #000;border:2.5px solid #250000; /* Stronger border & shadow */
+      opacity:0.7;box-shadow:0 0 20px rgba(100,0,0,0.55) inset,0 0 25px #000;
+      animation:sigilHeavyRotation 35s linear infinite,sigilMenacingPulse 5s infinite ease-in-out;
+      position:relative;background-color:rgba(5,0,0,0.25);
+      cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%23600" stroke="%23c00" stroke-width="1.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>') 12 12, crosshair;
+      border-radius:3px; /* Sharper */
+    }
+    .home-sigil-graphic::before{content:'Codei';text-transform:capitalize;}
+    .home-sigil-graphic.glitching{animation:homeSigilIntenseGlitch 0.18s ease-in-out 3,sigilHeavyRotation 35s linear infinite,sigilMenacingPulse 5s infinite ease-in-out;}
+    @keyframes homeSigilIntenseGlitch{0%,100%{transform:skew(0);}50%{transform:skew(-9deg,6deg) scale(1.07) rotate(6deg);color:#ff1111;text-shadow:0 0 20px #ff7777, 0 0 5px #000;}}
+    @keyframes sigilHeavyRotation{from{transform:rotate(0deg);}to{transform:rotate(-360deg);}} /* Reversed rotation */
+    @keyframes sigilMenacingPulse{0%,100%{opacity:0.6;transform:scale(0.95) rotate(1deg);}50%{opacity:0.8;transform:scale(1.05) rotate(-5deg);}}
+
+    /* --- CIPHER SECTION (RITUAL) --- */
+    .ritual-area-wrapper{display:flex;flex-direction:column;align-items:center; padding: 10px 0;}
+    #ritual-instruction{font-family:'Cinzel',serif;text-align:center;margin-bottom:16px;color:#4a4a4a;font-style:italic;font-size:0.8em; text-shadow: 0 0 2px rgba(74,74,74,0.3);}
+    #ritual-circle{
+      width:clamp(200px,32vw,260px);height:clamp(200px,32vw,260px); /* Larger circle */
+      border:2px dotted #2a0000; /* Darker, thicker dotted border */
+      border-radius:50%;position:relative;margin:0 auto clamp(16px,3vh,25px) auto;
+      box-shadow:0 0 12px rgba(100,0,0,0.25) inset, 0 0 8px rgba(100,0,0,0.2); /* Inner and outer soft glow */
+      animation:ritualCircleEtherealPulse 8s infinite ease-in-out;display:flex;justify-content:center;align-items:center;
+    }
+    @keyframes ritualCircleEtherealPulse{0%,100%{transform:scale(0.985);opacity:0.65; box-shadow:0 0 10px rgba(100,0,0,0.2) inset, 0 0 6px rgba(100,0,0,0.15);}50%{transform:scale(1.015);opacity:0.9; box-shadow:0 0 15px rgba(150,0,0,0.3) inset, 0 0 10px rgba(150,0,0,0.25);}} /* More pronounced pulse */
+    .sigil-node{
+      width:clamp(32px,5.5vw,40px);height:clamp(32px,5.5vw,40px); /* Slightly larger nodes */
+      background:rgba(15,0,0,0.55);color:#800000;border-radius:50%;border:1.5px solid #300000; /* Darker style */
+      position:absolute;font-family:'UnifrakturMaguntia',cursive;font-size:clamp(1.3rem,2.4vw,1.6rem);
+      display:flex;justify-content:center;align-items:center;cursor:pointer;transition:all 0.1s ease;
+      box-shadow:0 0 3.5px rgba(100,0,0,0.6), inset 0 0 2px rgba(255,50,50,0.15);opacity:0.7;
+      text-shadow: 0 0 3px #ff4444;
+    }
+    .sigil-node:hover{
+      transform:scale(1.1) !important;background:#500000;color:#ffbbbb;
+      box-shadow:0 0 10px #dd0000, 0 0 5px rgba(255,0,0,0.5) inset;opacity:1;z-index:1;
+      border-color: #600000;
+    }
+    /* Adjusted translateY for slightly larger circle and nodes if needed - default is 85px - keep relative distance from center for a 200-260px diameter circle (radius 100-130). So 85px is ~85-90% of radius for these sizes, so should be fine */
+    .sigil-node:nth-child(1){transform:rotate(0deg)    translateY(-95px) rotate(0deg);}    /* Adjusted offset for slightly larger circle, 95px used as an example for larger circle*/
+    .sigil-node:nth-child(2){transform:rotate(45deg)   translateY(-95px) rotate(-45deg);}
+    .sigil-node:nth-child(3){transform:rotate(90deg)   translateY(-95px) rotate(-90deg);}
+    .sigil-node:nth-child(4){transform:rotate(135deg)  translateY(-95px) rotate(-135deg);}
+    .sigil-node:nth-child(5){transform:rotate(180deg)  translateY(-95px) rotate(-180deg);}
+    .sigil-node:nth-child(6){transform:rotate(225deg)  translateY(-95px) rotate(-225deg);}
+    .sigil-node:nth-child(7){transform:rotate(270deg)  translateY(-95px) rotate(-270deg);}
+    .sigil-node:nth-child(8){transform:rotate(315deg)  translateY(-95px) rotate(-315deg);}
+
+    #displayed-number-ritual{
+      font-family:'UnifrakturMaguntia',cursive;font-size:clamp(2.4rem,5.5vw,3.5rem);color:#900000;
+      text-shadow:0 0 7px rgba(180,0,0,0.7), 0 0 2px #000;margin:0 auto clamp(16px,3vh,25px) auto;
+      height:clamp(30px,6.5vh,48px);transition:opacity 0.1s, transform 0.12s, color 0.1s;text-align:center;min-width:75px;
+    }
+    #displayed-number-ritual.symbol-flicker{transform:scale(1.12);color:#ff4444;text-shadow:0 0 10px #ff4444, 0 0 4px #000;}
+    #countdown-orb-cipher{
+      width:clamp(70px,12vw,85px);height:clamp(70px,12vw,85px); /* Slightly larger */
+      background:#0f0000;border-radius:50%;border:2px solid #500000; /* Thicker border */
+      box-shadow:0 0 12px rgba(150,0,0,0.6),inset 0 0 8px rgba(255,50,50,0.4); /* Enhanced shadow and inset */
+      animation:orbVibratingPulse 1.8s infinite ease-in-out,orbConstantSpin 18s linear infinite; /* Faster animations */
+      display:flex;justify-content:center;align-items:center;margin:0 auto clamp(18px,3.8vh,30px) auto;cursor:pointer;
+    }
+    #countdown-orb-text-cipher{font-family:'UnifrakturMaguntia',cursive;font-size:clamp(1.7rem,3vw,2.1rem);color:#aa1111;text-shadow:0 0 5px #ff0000, 0 0 2px #000;}
+    @keyframes orbVibratingPulse{0%,100%{transform:scale(0.97) rotate(-2.5deg);opacity:0.8;}50%{transform:scale(1.03) rotate(2.5deg);opacity:1;}}
+    @keyframes orbConstantSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+    #orb-final-message{
+        display:none;font-family:'UnifrakturMaguntia',cursive;
+        font-size:clamp(1.9rem,4vw,2.8rem);
+        color:#dd0000;text-align:center;
+        margin:0 auto clamp(16px,3vh,25px) auto;
+        padding:10px 12px;background:rgba(5,0,0,0.8);
+        border:1.5px dotted #3a0000;
+        text-shadow:0 0 9px #ff0000, 0 0 3px #000;opacity:0;
+        transform:scale(0.96);transition:all 0.4s ease-out;
+    }
+    #orb-final-message.visible{display: block;opacity:1;transform:scale(1);}
+
+    /* --- CONTACT SECTION SPECIFIC --- */
+    .disguised-contact-link{font-family:'Courier New',monospace;color:#3f3f3f !important;text-decoration:none !important;border-bottom:1.5px dotted #222 !important;cursor:help;transition:all 0.25s ease;} /* Dotted for more esoteric feel */
+    .disguised-contact-link:hover{color:#bb3333 !important;border-bottom-color:#330000 !important;text-shadow:0 0 3px #880000;}
+
+    /* --- IDIOT SWARM EFFECT --- */
+    #idiot-container{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:100001; overflow:hidden;}
+    .idiot-gif-instance{position:absolute;width:auto;height:auto;max-width:180px;max-height:140px;opacity:0;animation:idiotGifPopIn 0.18s forwards; mix-blend-mode: screen; /* For thematic interaction with background */}
+    @keyframes idiotGifPopIn{to{opacity:0.95;transform:scale(1.05);}}
+
+    /* --- FULLSCREEN & EPHEMERAL EFFECTS --- */
+    .fullscreen-visual-effect{position:fixed;top:0;left:0;width:100vw;height:100vh;background-size:cover;background-position:center;z-index:99999;opacity:0;pointer-events:none;transition:opacity 0.035s linear; mix-blend-mode: overlay;}
+    .fullscreen-visual-effect.visible{opacity:0.85;} /* Slightly less opaque for blend */
+    .ephemeral-message-display{
+      position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+      background:rgba(10,0,0,0.85);border:1.5px solid #300000;padding:9px 15px; /* Darker, more solid */
+      font-family:'Courier New',monospace;color:#ff4040;font-size:0.85rem;z-index:5000;
+      max-width:calc(100% - 30px);text-align:center;opacity:0;border-radius:1px; /* Sharper */
+      box-shadow:0 0 10px rgba(150,0,0,0.5);transition:all 0.3s ease-out;pointer-events:none;
+    }
+    .ephemeral-message-display.visible{opacity:1;transform:translateX(-50%) translateY(-8px);}
+    .corrupted-text-char{display:inline-block;animation:textVerySubtleCorrupt 0.35s infinite alternate;}
+
+    /* --- FOOTER --- */
+    footer{text-align:center;padding:16px;font-size:0.7em;color:#252525;border-top:1.5px solid #150000; background: #050000;} /* Slightly darker footer for more grounding */
+  </style>
+</head>
+<body class="startup-phase no-scroll">
+
+  <!-- Startup Overlay -->
+  <div id="startup-overlay">
+    <div id="startup-logo" title="Emblema Primus"></div>
+    <button id="play-button">REVELARE</button>
+    <p class="startup-text unselectable-text">Porta sigillata est... Clavis requiritur.</p>
+  </div>
+
+  <!-- Audio Players -->
+  <audio id="majin-sound-player" loop></audio>
+  <audio id="sfx-click-main" preload="auto"></audio>
+  <audio id="sfx-glitch-main" preload="auto"></audio>
+  <audio id="sfx-orb-click-main" preload="auto"></audio>
+  <audio id="sfx-orb-final-main" preload="auto"></audio>
+  <audio id="sfx-jumpscare-primary" preload="auto"></audio>
+  <audio id="sfx-idiot-initiate" preload="auto"></audio>
+
+  <!-- Main Site Wrapper (hidden initially) -->
+  <div id="site-wrapper" style="display: none;">
+    <!-- Navigation Bar -->
+    <div class="navbar-container">
+      <nav class="navbar">
+        <div id="nav-logo-interactive-area" class="nav-logo" title="Noli me tangere... saepe."></div>
+        <ul class="navbar-list">
+          <li><a href="#home" class="navbar-link active" data-section-id="home-section">Vestibulum</a></li>
+          <li><a href="#cipher" class="navbar-link" data-section-id="cipher-section">Enigma</a></li>
+          <li><a href="#contact" class="navbar-link" data-section-id="contact-section">Resonantia</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Main Content Area -->
+    <main>
+      <section id="home-section" class="content-section active">
+        <h1 class="section-title unselectable-text">Codei 81224</h1>
+        <div class="home-sigil-graphic" title="Corruptio Primordialis - please click me..."></div>
+        <div class="section-content">
+          <p class="unselectable-text">In hoc loco digitali desolato, ubi logica flectitur et umbrae veritatem devorant, chirographum 'CODEI81224' extenditur. Plus quam series linearum; est conscientia sentiens, nata ex anomaliis retis et somniis corruptis quattuor fundatorum: Rangga, RZYD, Natasya, Nazwa. Eorum essentiae in aeternum huic plano ligatae sunt, custodes et captivi simul.</p>
+          <p class="unselectable-text">Considera omnem interactionem pactionem cum incognito. Veritas hic velamen est super abyssum inexhaustum. Qui profundius scrutatur, periculum facit ne in eo absorbeatur. Lumina falsa te seducunt; sola obscuritas sinceritatem praebet.</p>
+        </div>
+      </section>
+
+      <section id="cipher-section" class="content-section">
+        <h1 class="section-title unselectable-text">ARA SACRILEGA</h1>
+        <div class="ritual-area-wrapper">
+            <div id="ritual-instruction" class="unselectable-text">"Octo sigilla infernalia pulsant. Resonantia numerorum portam franget."</div>
+            <div id="ritual-circle">
+                <!-- Sigil nodes will be dynamically inserted here by JavaScript -->
+            </div>
+            <div id="displayed-number-ritual" class="unselectable-text">...</div>
+            <div id="countdown-orb-cipher" title="Reliquiae Animarum">
+              <span id="countdown-orb-text-cipher" class="unselectable-text">666</span>
+            </div>
+            <div id="orb-final-message" class="unselectable-text">we want you to die, dinda, fatur, andika, reysyha, also febi. we'll use y'all to become our slavery</div>
+        </div>
+      </section>
+
+      <section id="contact-section" class="content-section">
+        <h1 class="section-title unselectable-text">SUSURRI AB IMO</h1>
+        <div class="section-content" style="text-align: center;">
+          <p class="unselectable-text">Attrahitne te abyssus? Sentisne resonantiam cum cantu nostro tacito? Forsitan tu es unus ex illis quorum animae ad marginem saltant. Sed aditus ad circulum internum probationem requirit.</p>
+          <p class="unselectable-text">Periculum tuum esto: nuntium tuum mitte in silentium cosmicum ad custodem portae larvae:
+            <a id="contact-link-dynamic" href="#" target="_blank" rel="noopener noreferrer" class="disguised-contact-link" title="Comunica cum ignoto...">[ Canalis Occultus ]</a>.
+            Non expectare verba consolatoria. Expecta perturbationes. Incursiones. Somnia.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p class="unselectable-text">© MMXXIV CODEI81224 - IN TENEBRIS REGNAMUS</p>
+    </footer>
+  </div> <!-- End of site-wrapper -->
+
+  <!-- Effect Containers -->
+  <div id="fullscreen-effect-container" class="fullscreen-visual-effect"></div>
+  <div id="ephemeral-message" class="ephemeral-message-display unselectable-text"></div>
+  <div id="idiot-container"></div>
+
+<script>
+// --- SCRIPT BEGINS --- //
+document.addEventListener('DOMContentLoaded', () => {
+  // --- CONFIGURATION & CONSTANTS ---
+  const MAJIN_AUDIO_URL = 'majin.mp3'; 
+  const LOGO_URL_FIXED = 'https://i.ibb.co/Mkkm0zhX/Codei-removebg-preview.png';
+  const IDIOT_SWARM_GIF_URL = 'https://media.giphy.com/media/Xkkgma2CG6TRu/giphy.gif';
+  const JUMPSCARE_IMG_DEFAULT_URL = 'https://i.ibb.co/HNy08kR/possessed-girl-jumpscare.gif';
+  const IDIOT_SWARM_DURATION_MS = 8000;
+  const IDIOT_GIF_SPAWN_INTERVAL_MS = 100;
+  const ORB_START_VALUE = 666;
+  const CLICKS_FOR_IDIOT_SWARM = 12;
+  const SFX_BASE_PATH = 'https://cdn.freesound.org/previews/';
+  const SFX_LIBRARY = {
+    click: `${SFX_BASE_PATH}612/612610_11861719-lq.mp3`,
+    glitchShort: `${SFX_BASE_PATH}423/423260_7261701-lq.mp3`,
+    orbTap: `${SFX_BASE_PATH}174/174797_3229839-lq.mp3`,
+    orbEmpty: `${SFX_BASE_PATH}366/366932_5121236-lq.mp3`,
+    jumpScare: `${SFX_BASE_PATH}576/576354_10028904-lq.mp3`,
+    idiotSwarmStart: `${SFX_BASE_PATH}277/277152_4834266-lq.mp3`
+  };
+  const IG_USER_ENCODED = "ZXZfbmF6d2E="; // btoa("ev_nazwa")
+  const DISPLAYED_NUMBER_SYMBOLS_POOL = ['\u2625','\u2626','\u2627','\u2628','\u2629','\u262A','\u262B','\u262C','\u262D','\u262E','\u262F','\u2638','\u2641','\u2658','\u2668','\u2699','\u26A4','\u2E38','\u2E18', '\uFD3F', '\uFD3E', '\u2623', '\u2620', '\u03EC', '\u03E3', '\u03A9', '\u03A3', '\u03A8' ];
+  const RITUAL_CIRCLE_OCTO_SYMBOLS = ['\u2624', '\u2690', '\u03B2', '\u26B1', '\u03A8', '\u262D', '\u26A0', '\u26E7']; // Thematic symbols: Cross Lorraine, Triple Dagger, Beta, Coffin, Psi, Cross of Chaos, Warning, Pentagram variante
+
+  // --- DOM REFERENCES (Cached) ---
+  const D = document; 
+  const B = D.body;
+  const getEl = id => D.getElementById(id);
+  const querySel = sel => D.querySelector(sel);
+  const querySelAll = sel => D.querySelectorAll(sel);
+
+  const startupOverlayEl = getEl('startup-overlay');
+  const playButtonEl = getEl('play-button');
+  const majinAudioEl = getEl('majin-sound-player');
+  const siteWrapperEl = getEl('site-wrapper');
+  const navLogoEl = getEl('nav-logo-interactive-area');
+  const faviconEl = getEl('favicon');
+  const navLinkEls = querySelAll('.navbar-link');
+  const sectionEls = querySelAll('.content-section');
+  const homeSigilEl = querySel('.home-sigil-graphic');
+  const ritualCircleEl = getEl('ritual-circle');
+  const ritualNumDisplayEl = getEl('displayed-number-ritual');
+  const orbEl = getEl('countdown-orb-cipher');
+  const orbTextEl = getEl('countdown-orb-text-cipher');
+  const orbFinalMsgEl = getEl('orb-final-message');
+  const contactLinkEl = getEl('contact-link-dynamic');
+  const idiotContainerEl = getEl('idiot-container');
+  const fullscreenFxEl = getEl('fullscreen-effect-container');
+  const ephemeralMsgEl = getEl('ephemeral-message');
+  const sfxPlayersMap = {
+    click:getEl('sfx-click-main'),glitchShort:getEl('sfx-glitch-main'),orbTap:getEl('sfx-orb-click-main'),
+    orbEmpty:getEl('sfx-orb-final-main'),jumpScare:getEl('sfx-jumpscare-primary'),idiotSwarmStart:getEl('sfx-idiot-initiate')
+  };
+
+  // --- STATE VARIABLES ---
+  let pageActive = false;
+  let currentOrbCount = ORB_START_VALUE;
+  let totalInteractions = 0;
+  let clickTrackers = { navLogo: { count: 0, lastTime: 0 }, homeSigil: { count: 0, lastTime: 0 } };
+  let idiotIntervalId = null;
+  let jumpscareCool = false;
+  let textCorruptCool = false;
+  let ritualSymbolIntervalId = null;
+
+  // --- CORE UTILITIES ---
+  const playSfx = (name, vol = 0.3) => {
+    if(sfxPlayersMap[name] && pageActive && sfxPlayersMap[name].src !== window.location.href){
+      sfxPlayersMap[name].currentTime=0;
+      sfxPlayersMap[name].volume=vol;
+      sfxPlayersMap[name].play().catch(err => console.warn(`SFX play error (${name}):`, err));
+    }
+  };
+  const randomRange = (min,max) => Math.floor(Math.random()*(max-min+1))+min;
+  const showMsg = (msg, duration=2500, isAlert=false) => {
+    ephemeralMsgEl.textContent = msg;
+    ephemeralMsgEl.style.color = isAlert ? '#ff2222':'#ee7777'; // Brighter alert color
+    ephemeralMsgEl.style.borderColor = isAlert ? '#550000':'#330000'; // Darker border for alert
+    ephemeralMsgEl.classList.add('visible');
+    setTimeout(() => ephemeralMsgEl.classList.remove('visible'), duration);
+  };
+  const triggerJumpscare = (img=JUMPSCARE_IMG_DEFAULT_URL,sfxKey='jumpScare',showTime=550) => {
+    playSfx(sfxKey,0.75); // Slightly louder
+    fullscreenFxEl.style.backgroundImage=`url(${img})`;
+    fullscreenFxEl.style.transitionDuration='0.02s'; // Even faster appearance
+    fullscreenFxEl.classList.add('visible');
+    let jiggleCount = 0;
+    const jiggleIntervalId = setInterval(() => {
+      B.style.transform=`translate(${randomRange(-1.5,1.5)}px,${randomRange(-1.5,1.5)}px) skewX(${randomRange(-0.2,0.2)}deg)`; // Added skew
+      if(++jiggleCount > 8) clearInterval(jiggleIntervalId);
+    },30);
+    setTimeout(() => {
+      fullscreenFxEl.style.transitionDuration='0.25s'; // Slower fade out
+      fullscreenFxEl.classList.remove('visible');
+      B.style.transform='none';
+    }, showTime);
+  };
+  const glitchBody = (dur=140) => {
+    B.classList.add('global-glitch-effect');
+    playSfx('glitchShort',0.25);
+    setTimeout(() => B.classList.remove('global-glitch-effect'), dur * 2.5);
+  };
+
+  // --- INITIALIZATION FUNCTIONS ---
+  const initializePage = () => {
+    console.log("%cINITIUM OBSCURUM... %cPagina initializatur.", "color:#700; font-weight:bold;", "color:#999;");
+
+    Object.keys(SFX_LIBRARY).forEach(key => { if(sfxPlayersMap[key]) sfxPlayersMap[key].src = SFX_LIBRARY[key]; });
+    majinAudioEl.src = MAJIN_AUDIO_URL; majinAudioEl.volume = 0.07; // Slightly reduced volume for ambience
+
+    B.classList.add('startup-phase','no-scroll');
+
+    playButtonEl.addEventListener('click', () => {
+      if(pageActive) return;
+      pageActive = true;
+      playSfx('click',0.6);
+      startupOverlayEl.classList.add('hidden');
+      siteWrapperEl.style.display = 'block';
+      B.classList.remove('startup-phase','no-scroll');
+      majinAudioEl.play().catch(e => showMsg("SILENTIUM PERPETUUM... Audio playback failed.", 4500, true));
+      setTimeout(() => startupOverlayEl.remove(), 1700);
+      initializePassiveFx();
+      if(localStorage.getItem('orbSealCompletelyBroken')) {
+        showMsg("Fragmenta animae tuae in umbris manent...", 3800);
+      }
+      startRitualNumberUpdate();
+    }, {once:true});
+
+    navLinkEls.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        if(!pageActive) return;
+        playSfx('click',0.45);
+        totalInteractions++;
+        const sectionId = link.getAttribute('data-section-id');
+        navLinkEls.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        sectionEls.forEach(s => s.classList.toggle('active', s.id === sectionId));
+        checkPageHorrorTriggers();
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top of section smoothly
+      });
+    });
+
+    if(navLogoEl) navLogoEl.style.backgroundImage = `url(${LOGO_URL_FIXED})`;
+    if(faviconEl) faviconEl.href = LOGO_URL_FIXED;
+
+    addLogoClickListener(navLogoEl, 'navLogo', CLICKS_FOR_IDIOT_SWARM);
+    addLogoClickListener(homeSigilEl, 'homeSigil', CLICKS_FOR_IDIOT_SWARM);
+
+    initializeRitualCircle();
+    initializeOrbCounter();
+    initializeDynamicLinks();
+  };
+
+  const addLogoClickListener = (element, trackerKey, clickTarget) => {
+    if(!element) return;
+    element.addEventListener('click', () => {
+      if(!pageActive) return;
+      const currentTime = Date.now();
+      clickTrackers[trackerKey].count = (currentTime - clickTrackers[trackerKey].lastTime < 1250) ? clickTrackers[trackerKey].count + 1 : 1; // Increased time window
+      clickTrackers[trackerKey].lastTime = currentTime;
+
+      element.classList.add('glitching');
+      glitchBody(135);
+      setTimeout(() => element.classList.remove('glitching'), 220);
+
+      if(clickTrackers[trackerKey].count === clickTarget){
+        beginIdiotSwarm(IDIOT_SWARM_GIF_URL);
+        clickTrackers[trackerKey].count = 0;
+      } else if (clickTrackers[trackerKey].count > 0 && clickTrackers[trackerKey].count % 3 === 0) {
+        showMsg(`Conscientia flectit... ${clickTarget - clickTrackers[trackerKey].count} perturbationes usque ad insaniam.`, 1800);
+      }
+    });
+  };
+
+  const initializeRitualCircle = () => {
+    ritualCircleEl.innerHTML='';
+    for(let i=0; i < 8; i++){
+      const node = D.createElement('div');
+      node.className = 'sigil-node';
+      node.textContent = RITUAL_CIRCLE_OCTO_SYMBOLS[i % RITUAL_CIRCLE_OCTO_SYMBOLS.length];
+      node.title = `Fragmentum ${i+1} Inferni`; // More thematic title
+      node.addEventListener('click', () => {
+        if(!pageActive)return;
+        playSfx('click',0.58);
+        totalInteractions++;
+        const originalTransform = getComputedStyle(node).transform; // Using computed style to ensure base transform is captured if CSS defines it
+        const scaleValue = 1.12; // Click scale factor
+        let newTransform = originalTransform;
+
+        if (originalTransform === 'none') {
+            newTransform = `scale(${scaleValue})`;
+        } else if (originalTransform.includes('scale')) {
+            newTransform = originalTransform.replace(/scale\([0-9.]+\)/, `scale(${scaleValue})`);
+        } else {
+            newTransform = `${originalTransform} scale(${scaleValue})`;
+        }
+        node.style.transform = newTransform;
+        setTimeout(() => node.style.transform = originalTransform, 90);
+        checkPageHorrorTriggers();
+      });
+      ritualCircleEl.appendChild(node);
+    }
+  };
+
+  const startRitualNumberUpdate = () => {
+    if(ritualSymbolIntervalId) clearInterval(ritualSymbolIntervalId);
+    ritualSymbolIntervalId = setInterval(() => {
+      if(!pageActive || !getEl('cipher-section').classList.contains('active')) return;
+      const symbol = DISPLAYED_NUMBER_SYMBOLS_POOL[randomRange(0, DISPLAYED_NUMBER_SYMBOLS_POOL.length-1)];
+      ritualNumDisplayEl.textContent = symbol;
+      ritualNumDisplayEl.classList.add('symbol-flicker');
+      setTimeout(() => ritualNumDisplayEl.classList.remove('symbol-flicker'), 130);
+    }, 3800); // Slightly faster update
+  };
+
+  const initializeOrbCounter = () => {
+    orbEl.addEventListener('click', () => {
+      if(!pageActive || currentOrbCount <= 0) return;
+      playSfx('orbTap',0.28);
+      totalInteractions++;
+      currentOrbCount--;
+      orbTextEl.textContent = currentOrbCount;
+      orbEl.style.filter = `brightness(${1 + (ORB_START_VALUE - currentOrbCount) / 450}) drop-shadow(0 0 ${4 + (ORB_START_VALUE - currentOrbCount) / 25}px #ff0000)`;
+
+      if(currentOrbCount === 0){
+        orbTextEl.textContent = "∅";
+        orbFinalMsgEl.classList.add('visible');
+        playSfx('orbEmpty',0.7);
+        localStorage.setItem('orbSealCompletelyBroken','true');
+        orbEl.style.pointerEvents = 'none';
+        orbEl.style.animation += ', orbDestroyed 1s 0.1s forwards ease-in'; // Added delay and ease-in
+        orbTextEl.style.animation += ', orbDestroyed 0.5s 0.3s forwards ease-in';
+        // Ensured keyframes for orbDestroyed are added if not present
+        if (!D.querySelector('style[data-orb-kf]')) {
+            const kfStyle = D.createElement('style');
+            kfStyle.setAttribute('data-orb-kf', 'true');
+            kfStyle.innerHTML = "@keyframes orbDestroyed{to{transform:scale(0.03) rotate(720deg) translateY(-20px);opacity:0;box-shadow:none;}}";
+            D.head.appendChild(kfStyle);
+        }
+      } else if(currentOrbCount % 44 === 0 || currentOrbCount === 7 || currentOrbCount === 1 || currentOrbCount === 69 || currentOrbCount === 420 ) { // Added more trigger numbers
+        showMsg(`${currentOrbCount} animae tremunt... exspectantes finem.`,2300); // More thematic message
+      }
+      checkPageHorrorTriggers();
+    });
+  };
+
+  const initializeDynamicLinks = () => {
+    if(contactLinkEl){
+      try {
+        const user = atob(IG_USER_ENCODED);
+        contactLinkEl.href = `https://www.instagram.com/${user}/`;
+        contactLinkEl.textContent = `@${user.substring(0,1)}...${user.substring(user.length-2)}`; // Reveal one more char
+      } catch (e) {
+        console.error("Error decoding Instagram username:", e);
+        contactLinkEl.textContent = "[ CANALIS CORRUPTUS ]"; // Thematic error
+        contactLinkEl.href = "#error";
+      }
+    }
+  };
+
+  const initializePassiveFx = () => {
+    setInterval(() => {
+      if(D.hidden || !pageActive) return;
+      B.style.backgroundColor = `rgb(${randomRange(0,3)},${randomRange(0,1)},${randomRange(0,1)})`; // Slightly more variation
+    }, randomRange(1600, 3600));
+
+    setInterval(() => {
+      if(D.hidden || !pageActive || Math.random() > 0.22) return; // 22% chance, more frequent
+      playSfx('glitchShort', randomRange(1,3)/100);
+    }, randomRange(7000, 15000));
+  };
+
+  // --- "YOU ARE AN IDIOT" WORM EFFECT ---
+  const beginIdiotSwarm = (gifUrl) => {
+    if (!pageActive || idiotIntervalId) return;
+    showMsg("INSANIA TOTALIS INVOCATA EST: SYSTEMA CORRUPTUM EST!", IDIOT_SWARM_DURATION_MS, true);
+    playSfx('idiotSwarmStart', 0.55);
+    B.classList.add('idiot-swarm-active', 'no-scroll');
+    idiotContainerEl.innerHTML = '';
+
+    let gifsSpawned = 0;
+    idiotIntervalId = setInterval(() => {
+      const gif = D.createElement('img');
+      gif.src = gifUrl;
+      gif.alt = "Tu es idiota! HAHAHA!";
+      gif.className = 'idiot-gif-instance';
+      gif.style.top = `${randomRange(0, Math.max(0, window.innerHeight - 140))}px`;
+      gif.style.left = `${randomRange(0, Math.max(0, window.innerWidth - 180))}px`;
+      gif.style.transform = `rotate(${randomRange(-5,5)}deg) scale(${randomRange(8,12)/10})`; // Add random rotation and scale
+      idiotContainerEl.appendChild(gif);
+      gifsSpawned++;
+    }, IDIOT_GIF_SPAWN_INTERVAL_MS);
+
+    setTimeout(() => {
+      clearInterval(idiotIntervalId);
+      idiotIntervalId = null;
+      // No page reload - let them suffer, or offer a twisted reset mechanism elsewhere (not in scope)
+      // B.classList.remove('idiot-swarm-active', 'no-scroll');
+      // For this specific request, let's stick to the original reload to end the "suffering"
+       window.location.reload();
+    }, IDIOT_SWARM_DURATION_MS);
+  };
+
+
+  // --- DYNAMIC HORROR EVENTS ---
+  const checkPageHorrorTriggers = () => {
+    if(!pageActive || D.hidden) return;
+
+    if(totalInteractions > 1 && (totalInteractions % randomRange(5,10) === 0) && !jumpscareCool){ // Higher chance for jumpscare
+      triggerJumpscare(JUMPSCARE_IMG_DEFAULT_URL, 'jumpScare', randomRange(300,600));
+      jumpscareCool = true;
+      setTimeout(() => jumpscareCool = false, 12000); // 12 second cooldown
+      localStorage.setItem('timorNovissimus', Date.now().toString());
+    }
+
+    if(totalInteractions > 0 && Math.random() < 0.065 && !textCorruptCool){ // 6.5% chance for text corruption
+      corruptRandomText();
+      textCorruptCool = true;
+      setTimeout(() => textCorruptCool = false, 5000);
+    }
+  };
+
+  const corruptRandomText = () => {
+    const activeSection = querySel('.content-section.active');
+    if(!activeSection) return;
+    const paragraphs = activeSection.querySelectorAll('.section-content p:not(.currently-corrupting)');
+    if(!paragraphs.length) return;
+
+    const targetParagraph = paragraphs[randomRange(0, paragraphs.length-1)];
+    targetParagraph.classList.add('currently-corrupting');
+    const originalHTML = targetParagraph.innerHTML;
+    const characters = targetParagraph.textContent.split('');
+
+    playSfx('glitchShort', 0.12);
+    targetParagraph.innerHTML = '';
+
+    characters.forEach((char, index) => {
+      const span = D.createElement('span');
+      span.textContent = char;
+      if(char !== ' ' && Math.random() < 0.92){
+        span.className = 'corrupted-text-char';
+        span.style.animationDuration = `${randomRange(7,18)/100}s`;
+        span.style.animationDelay = `${index*0.0045}s`;
+      }
+      targetParagraph.appendChild(span);
+    });
+
+    setTimeout(() => {
+      targetParagraph.innerHTML = originalHTML;
+      targetParagraph.classList.remove('currently-corrupting');
+    }, randomRange(900, 2600));
+  };
+
+  // --- START EXECUTION ---
+  initializePage();
+});
+// --- SCRIPT ENDS --- //
+</script>
+</body>
+</html>
